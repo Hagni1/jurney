@@ -36,11 +36,29 @@ export function calculateDodgeChance(dexterity: number): number {
 }
 
 export function calculateExpToNextLevel(level: number): number {
-  return 100 * level * level;
+  return Math.floor(300 + 100 * level + 100 * level * level);
 }
 
-export function calculateStageExp(stage: number): number {
-  return 50 * stage;
+export function calculateStageExp(stage: number, level: number): number {
+  // Flat bonus to fix early game pacing
+  const earlyBonus = 300;
+
+  // Base scaling (gentle early, stronger later)
+  const baseExp = 50 * stage * stage + 50 * stage + earlyBonus;
+
+  const diff = stage - level;
+
+  let multiplier = 1;
+
+  if (diff > 0) {
+    // Catch-up bonus (early game friendly)
+    multiplier += Math.min(diff * 0.2, 0.6);
+  } else {
+    // Soft penalty
+    multiplier -= Math.min(Math.abs(diff) * 0.08, 0.35);
+  }
+
+  return Math.floor(baseExp * multiplier);
 }
 
 export interface TurnMeterEntity {
@@ -197,13 +215,12 @@ export function simulateCombat(
   let died = false;
 
   if (isWin) {
-    const baseExp = calculateStageExp(enemy.level);
-    expGained = isFirstCompletion ? baseExp : Math.floor(baseExp * 0.2);
+    const baseExp = calculateStageExp(enemy.level, player.level);
+    expGained = isFirstCompletion ? baseExp : Math.floor(baseExp * 0.7);
   } else {
     died = true;
     expLost = Math.floor(player.exp * 0.1);
   }
-
   return {
     isWin,
     actions,
