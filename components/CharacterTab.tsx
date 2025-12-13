@@ -36,7 +36,8 @@ export default function CharacterTab({ character }: CharacterTabProps) {
             className="bg-blue-600 h-4 rounded-full"
             style={{
               width: `${Math.min(
-                ((character?.exp ?? 0) / (character?.expToNextLevel ?? 1)) * 100,
+                ((character?.exp ?? 0) / (character?.expToNextLevel ?? 1)) *
+                  100,
                 100
               )}%`,
             }}

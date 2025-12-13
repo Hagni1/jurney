@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS journey_game;
+
 USE journey_game;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -82,23 +83,36 @@ CREATE TABLE IF NOT EXISTS stageCompletions (
     UNIQUE KEY unique_character_stage (characterId, stage)
 );
 
-ALTER TABLE users ADD FOREIGN KEY (characterId) REFERENCES characters(id);
+ALTER TABLE
+    users
+ADD
+    FOREIGN KEY (characterId) REFERENCES characters(id);
 
-INSERT INTO enemies (name, dexterityPerLvl, intelligencePerLvl, strengthPerLvl, baseSpeed) VALUES
-('Goblin', 1, 0, 2, 8),
-('Orc', 0, 1, 3, 6),
-('Skeleton', 2, 0, 1, 12),
-('Dark Mage', 1, 3, 0, 9),
-('Dragon', 2, 2, 5, 7);
+INSERT INTO
+    enemies (
+        name,
+        dexterityPerLvl,
+        intelligencePerLvl,
+        strengthPerLvl,
+        baseSpeed
+    )
+VALUES
+    ('Goblin', 1, 0, 2, 8),
+    ('Orc', 0, 1, 3, 6),
+    ('Skeleton', 2, 0, 1, 12),
+    ('Dark Mage', 1, 3, 0, 9),
+    ('Dragon', 2, 2, 5, 7);
 
-INSERT INTO stages (id, enemyId, enemyLvl) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 3),
-(4, 3, 4),
-(5, 1, 5),
-(10, 2, 10),
-(15, 3, 15),
-(20, 4, 20),
-(50, 4, 50),
-(100, 5, 100);
+INSERT INTO
+    stages (id, enemyId, enemyLvl)
+VALUES
+    (1, 1, 1),
+    (2, 1, 2),
+    (3, 2, 3),
+    (4, 3, 4),
+    (5, 1, 5),
+    (10, 2, 10),
+    (15, 3, 15),
+    (20, 4, 20),
+    (50, 4, 50),
+    (100, 5, 100);

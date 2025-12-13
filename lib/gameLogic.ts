@@ -13,7 +13,7 @@ export interface EntityStats extends CharacterStats {
 }
 
 export function calculateHP(level: number, strength: number): number {
-  return 100 + (level * 10) + strength;
+  return 100 + level * 10 + strength;
 }
 
 export function calculateShield(intelligence: number): number {
@@ -24,7 +24,10 @@ export function calculateDamage(level: number, strength: number): number {
   return 10 + level + strength;
 }
 
-export function calculateAttackSpeed(dexterity: number, baseSpeed: number = 10): number {
+export function calculateAttackSpeed(
+  dexterity: number,
+  baseSpeed: number = 10
+): number {
   return baseSpeed + dexterity;
 }
 
@@ -92,7 +95,10 @@ export function simulateCombat(
   const enemyMaxHp = calculateHP(enemy.level, enemy.strength);
   const enemyMaxShield = calculateShield(enemy.intelligence);
   const enemyDamage = calculateDamage(enemy.level, enemy.strength);
-  const enemyAttackSpeed = calculateAttackSpeed(enemy.dexterity, enemy.baseSpeed);
+  const enemyAttackSpeed = calculateAttackSpeed(
+    enemy.dexterity,
+    enemy.baseSpeed
+  );
   const enemyDodge = calculateDodgeChance(enemy.dexterity);
 
   const playerEntity: TurnMeterEntity = {
@@ -106,7 +112,7 @@ export function simulateCombat(
     attackSpeed: playerAttackSpeed,
     dodgeChance: playerDodge,
     meter: 0,
-    isPlayer: true
+    isPlayer: true,
   };
 
   const enemyEntity: TurnMeterEntity = {
@@ -120,7 +126,7 @@ export function simulateCombat(
     attackSpeed: enemyAttackSpeed,
     dodgeChance: enemyDodge,
     meter: 0,
-    isPlayer: false
+    isPlayer: false,
   };
 
   const actions: CombatAction[] = [];
@@ -129,37 +135,41 @@ export function simulateCombat(
 
   while (playerEntity.hp > 0 && enemyEntity.hp > 0 && turnCount < maxTurns) {
     turnCount++;
-    
+
     playerEntity.meter += playerEntity.attackSpeed;
     enemyEntity.meter += enemyEntity.attackSpeed;
 
-    const attacker = playerEntity.meter >= 100 && playerEntity.meter >= enemyEntity.meter ? playerEntity : 
-                     enemyEntity.meter >= 100 ? enemyEntity : null;
+    const attacker =
+      playerEntity.meter >= 100 && playerEntity.meter >= enemyEntity.meter
+        ? playerEntity
+        : enemyEntity.meter >= 100
+        ? enemyEntity
+        : null;
 
     if (!attacker) continue;
 
     const defender = attacker.isPlayer ? enemyEntity : playerEntity;
-    
+
     const dodged = Math.random() * 100 < defender.dodgeChance;
     const damage = dodged ? 0 : attacker.damage;
-    
+
     const hpBefore = defender.hp;
     const shieldBefore = defender.shield;
-    
+
     let remainingDamage = damage;
     if (defender.shield > 0) {
       const shieldDamage = Math.min(defender.shield, remainingDamage);
       defender.shield -= shieldDamage;
       remainingDamage -= shieldDamage;
     }
-    
+
     if (remainingDamage > 0) {
       defender.hp -= remainingDamage;
     }
-    
+
     const shieldAfter = defender.shield;
     const hpAfter = defender.hp;
-    
+
     actions.push({
       attacker: attacker.name,
       defender: defender.name,
@@ -169,11 +179,11 @@ export function simulateCombat(
       hpAfter,
       shieldBefore,
       shieldAfter,
-      attackerDamage: attacker.damage
+      attackerDamage: attacker.damage,
     });
-    
+
     attacker.meter = 0;
-    
+
     if (defender.hp <= 0) {
       break;
     }
@@ -203,11 +213,15 @@ export function simulateCombat(
     died,
     expLost,
     playerAttackSpeed: playerEntity.attackSpeed,
-    enemyAttackSpeed: enemyEntity.attackSpeed
+    enemyAttackSpeed: enemyEntity.attackSpeed,
   };
 }
 
-export function processExpGain(currentExp: number, currentLevel: number, expGained: number): { exp: number; level: number; leveledUp: boolean } {
+export function processExpGain(
+  currentExp: number,
+  currentLevel: number,
+  expGained: number
+): { exp: number; level: number; leveledUp: boolean } {
   let exp = currentExp + expGained;
   let level = currentLevel;
   let leveledUp = false;

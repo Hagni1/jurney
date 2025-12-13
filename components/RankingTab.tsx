@@ -43,7 +43,9 @@ export default function RankingTab() {
       <h2 className="text-2xl font-bold mb-6">Player Rankings</h2>
 
       {loading ? (
-        <div className="text-center text-gray-400 py-8">Loading rankings...</div>
+        <div className="text-center text-gray-400 py-8">
+          Loading rankings...
+        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -101,7 +103,9 @@ export default function RankingTab() {
                   <td className="py-3 px-2 text-center">{player.hp}</td>
                   <td className="py-3 px-2 text-center">{player.shield}</td>
                   <td className="py-3 px-2 text-center">{player.damage}</td>
-                  <td className="py-3 px-2 text-center">{player.attackSpeed}</td>
+                  <td className="py-3 px-2 text-center">
+                    {player.attackSpeed}
+                  </td>
                   <td className="py-3 px-2 text-center">
                     {player.dodgeChance.toFixed(1)}%
                   </td>

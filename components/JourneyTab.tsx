@@ -112,7 +112,7 @@ export default function JourneyTab({ character, onUpdate }: JourneyTabProps) {
       (a: CombatAction) => a.defender === enemyName
     );
     // If player never got attacked, use their max HP from character stats
-    const playerMaxHP = 100 + (character.level * 10) + character.strength;
+    const playerMaxHP = 100 + character.level * 10 + character.strength;
     const playerMaxShield = character.intelligence * 5;
     let playerHP = playerFirstDefense?.hpBefore || playerMaxHP;
     let playerShield = playerFirstDefense?.shieldBefore || playerMaxShield;
@@ -180,7 +180,9 @@ export default function JourneyTab({ character, onUpdate }: JourneyTabProps) {
           <option value="">Choose a stage</option>
           {availableStages.map((stage) => (
             <option key={stage.id} value={stage.id}>
-              Stage {stage.id}{stage.id % 10 === 0 ? ' [BOSS]' : ''} - {stage.enemyName} (Level {stage.enemyLvl})
+              Stage {stage.id}
+              {stage.id % 10 === 0 ? " [BOSS]" : ""} - {stage.enemyName} (Level{" "}
+              {stage.enemyLvl})
             </option>
           ))}
         </select>

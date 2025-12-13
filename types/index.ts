@@ -43,7 +43,7 @@ export interface Enemy {
 export interface Training {
   id: number;
   characterId: number;
-  stat: 'dexterity' | 'intelligence' | 'strength';
+  stat: "dexterity" | "intelligence" | "strength";
   startTime: Date;
   lastClaimTime: Date;
 }
