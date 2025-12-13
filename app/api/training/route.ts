@@ -32,7 +32,7 @@ export async function GET(_request: NextRequest) {
 
     const trainingData = training[0];
     const character = characters[0];
-    const maxAfkMinutes = Math.max(10, character.level);
+    const maxAfkMinutes = 10 + character.level;
 
     const now = new Date();
     const lastClaim = new Date(trainingData.lastClaimTime);
